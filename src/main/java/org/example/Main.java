@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import static org.example.excel.Create.createExcel;
 import static org.example.metadata.Column.getColumn;
 import static org.example.metadata.Tables.getTables;
-import static org.example.excel.Insert.insertToTable;
+import static org.example.database.Insert.insertToTable;
 import static org.example.excel.Read.read;
 import java.util.ArrayList;
 

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Insert {
-    public static void insertToTable(Connection conn, String tableName, ArrayList<ArrayList<String>> data) throws SQLException {
+    public static void insertIntoTable(Connection conn, String tableName, ArrayList<ArrayList<String>> data) throws SQLException {
 
         String s = " values (" + "?,".repeat(data.get(0).size()-1) + "?)";
         PreparedStatement pstm = conn.prepareStatement("insert into " + tableName + s);

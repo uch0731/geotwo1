@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import static org.example.excel.CreateExcel.createExcelFromTable;
 import static org.example.metadata.ColumnInfo.getColumnInfo;
 import static org.example.metadata.TableInfo.getTableInfo;
-import static org.example.database.Insert.insertToTable;
+import static org.example.database.Insert.insertIntoTable;
 import static org.example.excel.ReadExcel.readExcel;
 import java.util.ArrayList;
 
@@ -44,7 +44,7 @@ public class Main {
         data = readExcel(readLocation);
         System.out.println(data);
 
-        insertToTable(connectOracle.conn,tableName,data);
+        insertIntoTable(connectOracle.conn,tableName,data);
 
         createExcelFromTable(connectOracle.conn, tableName,columnsInfo,uploadLocation);
 

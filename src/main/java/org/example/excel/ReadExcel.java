@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Read {
-    public static ArrayList<ArrayList<String>> read(){
+public class ReadExcel {
+    public static ArrayList<ArrayList<String>> readExcel(String location){
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         try {
-            FileInputStream fis = new FileInputStream("C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당_공연 및 전시 입장객 현황_20220728.xlsx");
+            FileInputStream fis = new FileInputStream(location);
             XSSFWorkbook workBook = new XSSFWorkbook (fis);
 
             XSSFSheet sheet = workBook.getSheetAt(0);

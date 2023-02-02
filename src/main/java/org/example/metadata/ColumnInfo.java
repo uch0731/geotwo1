@@ -5,25 +5,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Column {
+public class ColumnInfo {
 
     public String name;
     public String type;
     public int size;
 
-    public static ArrayList<Column> getColumn(Connection conn, String Schema, String tableName) throws SQLException {
-        ArrayList<Column> columns = new ArrayList<>();
+    public static ArrayList<ColumnInfo> getColumnInfo(Connection conn, String Schema, String tableName) throws SQLException {
+        ArrayList<ColumnInfo> columns = new ArrayList<>();
         ResultSet rs = conn.getMetaData().getColumns(null, Schema, tableName, "%");
 
         while(rs.next()) {
-            Column temp = new Column();
+            ColumnInfo temp = new ColumnInfo();
             temp.name = rs.getString("COLUMN_NAME");
             temp.type = rs.getString("TYPE_NAME");
             temp.size = rs.getInt("COLUMN_SIZE");
-            System.out.println("Column Name : " + temp.name + "  Column Type : " + temp.type + "  Column Size : " + temp.size);
             columns.add(temp);
         }
-
+        rs.close();
         return columns;
     }
 }

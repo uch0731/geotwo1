@@ -2,16 +2,16 @@ package org.example.metadata;
 
 import java.sql.*;
 
-public class Connect {
+public class ConnectManager {
 
     public Connection conn;
     private String dbUrl;
     private String id;
     private String pw;
 
-    public Connect(String dburl, String id, String pw) {
+    public ConnectManager(String dbUrl, String id, String pw) {
         this.conn =  null;
-        this.dbUrl = dburl;
+        this.dbUrl = dbUrl;
         this.id = id;
         this.pw = pw;
     }

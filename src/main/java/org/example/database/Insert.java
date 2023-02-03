@@ -9,15 +9,15 @@ public class Insert {
     public static void insertIntoTable(Connection conn, String tableName, ArrayList<ArrayList<String>> data) throws SQLException {
 
         String s = " values (" + "?,".repeat(data.get(0).size()-1) + "?)";
-        PreparedStatement pstm = conn.prepareStatement("insert into " + tableName + s);
+        PreparedStatement pst = conn.prepareStatement("insert into " + tableName + s);
 
         for(int i =0; i<data.size(); i++) {
             for(int j =0; j<data.get(i).size(); j++) {
-                pstm.setString(j+1, data.get(i).get(j));
+                pst.setString(j+1, data.get(i).get(j));
             }
-            pstm.addBatch();
+            pst.addBatch();
         }
-        pstm.executeBatch();
-        pstm.close();
+        pst.executeBatch();
+        pst.close();
     }
 }

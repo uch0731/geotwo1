@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SelectAll {
+//data 추출
+public class DataExtraction {
 //    public static  ArrayList<ArrayList<String>> selectAllFromTable(Connection conn, String tableName, ArrayList<ColumnInfo> columnsInfo) throws SQLException {
 //
 //        ArrayList<ArrayList<String>> data = new ArrayList<>();
@@ -30,6 +31,7 @@ public class SelectAll {
 //        pst.close();
 //        return data;
 //    }
+    //모든 데이터 가져오기
     public static  ArrayList<ArrayList<String>> selectAllFromTable
     (Connection conn, String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn) throws SQLException {
 

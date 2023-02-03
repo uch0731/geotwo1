@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Insert {
+
+public class DataInput {
+    //데이터 입력
     public static void insertIntoTable(Connection conn, String tableName, ArrayList<ArrayList<String>> data) throws SQLException {
 
         String s = " values (" + "?,".repeat(data.get(0).size()-1) + "?)";

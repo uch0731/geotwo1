@@ -6,41 +6,49 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//column 정보
 public class ColumnInfo {
-    public String name;
-    public String type;
-    public int size;
 
-//    public static ArrayList<ColumnInfo> getColumnInfo(Connection conn, String Schema, String tableName) throws SQLException {
-//        ArrayList<ColumnInfo> columns = new ArrayList<>();
-//        tableName = tableName;
-//        ResultSet rs = conn.getMetaData().getColumns(null, Schema, tableName, "%");
-//
-//        while(rs.next()) {
-//            ColumnInfo temp = new ColumnInfo();
-//            temp.name = rs.getString("COLUMN_NAME");
-//            temp.type = rs.getString("TYPE_NAME");
-//            temp.size = rs.getInt("COLUMN_SIZE");
-//            columns.add(temp);
-//        }
-//        rs.close();
-//        return columns;
-//    }
+    private HashMap<String, ArrayList<ColumnInfo>> tableAndColumn;
+    private String name;
+    private String type;
+    private int size;
 
-    public static HashMap<String, ArrayList<ColumnInfo>> getColumnInfo(Connection conn, String Schema, String tableName) throws SQLException {
-        HashMap<String, ArrayList<ColumnInfo>> tableAndColumn = new HashMap<>();
-        ArrayList<ColumnInfo> columns = new ArrayList<>();
-        ResultSet rs = conn.getMetaData().getColumns(null, Schema, tableName, "%");
+    public ArrayList<ColumnInfo> getColumInfo(String tableName){
+        return tableAndColumn.get(tableName);
+    }
 
-        while(rs.next()) {
-            ColumnInfo temp = new ColumnInfo();
-            temp.name = rs.getString("COLUMN_NAME");
-            temp.type = rs.getString("TYPE_NAME");
-            temp.size = rs.getInt("COLUMN_SIZE");
-            columns.add(temp);
-        }
-        tableAndColumn.put(tableName,columns);
-        rs.close();
+    public HashMap<String, ArrayList<ColumnInfo>> getTableAndColumn() {
         return tableAndColumn;
     }
+    public void setTableAndColumn(HashMap<String, ArrayList<ColumnInfo>> tableAndColumn){
+        this.tableAndColumn = tableAndColumn;
+    }
+
+//    public void setTableAndColumn(ConnectManager manager, String Schema, String tableName) throws SQLException{
+//        tableAndColumn = manager.getColumnInfo(Schema, tableName);
+//    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
 }

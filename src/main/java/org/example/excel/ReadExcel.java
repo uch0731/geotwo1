@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ReadExcel {
+    //excel 파일 읽기
     public static ArrayList<ArrayList<String>> readExcel(String location){
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         try {

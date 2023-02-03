@@ -1,22 +1,38 @@
 package org.example.metadata;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+//table 정보
 public class TableInfo {
 
-    public String name;
-    public static ArrayList<String> getTableInfo(Connection conn, String Schema) throws SQLException{
+    private ArrayList<String> tableNames;
+//    private HashMap<String, ArrayList<ColumnInfo>> tableAndColumn = new HashMap<>();
 
-        ArrayList<String> tableInfo = new ArrayList<>();
-        ResultSet rs = conn.getMetaData().getTables(null, Schema, null, null);
-        while(rs.next()) {
-            String table = rs.getString("TABLE_NAME");
-            tableInfo.add(table);
-        }
-        rs.close();
-        return tableInfo;
+    public ArrayList<String> getTableNames(){
+        return this.tableNames;
     }
+
+    public void setTableNames( ArrayList<String> names) throws SQLException{
+
+        tableNames = names;
+    }
+
+//    public void setTableNames(ConnectManager manager, String Schema) throws SQLException{
+//
+//        tableNames = manager.getTableInfo(Schema);
+//    }
+
+//    public HashMap<String, ArrayList<ColumnInfo>> getTableAndColumn() {
+//        return this.tableAndColumn;
+//    }
+//
+//    public void setTableAndColumn(String tableName, ArrayList<ColumnInfo> columnInfo) {
+//        tableAndColumn.put(tableName,columnInfo);
+//    }
+
 }

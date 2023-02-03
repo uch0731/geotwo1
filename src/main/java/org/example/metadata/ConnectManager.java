@@ -7,16 +7,32 @@ import java.util.HashMap;
 //
 public class ConnectManager {
 
-    public Connection conn;
+    private static ConnectManager instance;
+    private Connection conn;
     private String dbUrl;
     private String id;
     private String pw;
 
-    public ConnectManager(String dbUrl, String id, String pw) {
-        this.conn =  null;
-        this.dbUrl = dbUrl;
-        this.id = id;
-        this.pw = pw;
+
+//    private ConnectManager(String dbUrl, String id, String pw) {
+//        this.conn =  null;
+//        this.dbUrl = dbUrl;
+//        this.id = id;
+//        this.pw = pw;
+//    }
+
+    //싱글톤 방식
+    public static ConnectManager getInstance()
+    {
+        if (instance == null)
+        {
+            synchronized(ConnectManager.class)
+            {
+                instance = new ConnectManager();
+            }
+        }
+
+        return instance;
     }
 
     //DB연결
@@ -82,7 +98,27 @@ public class ConnectManager {
         columnInfo.setTableAndColumn(tableAndColumn);
     }
 
-//    public HashMap<String, ArrayList<ColumnInfo>> getColumnInfo(String Schema, String tableName) throws SQLException {
+    public void closeConnection() throws SQLException {
+        conn.close();
+    }
+
+    public void setDbUrl(String dbUrl) {
+        this.dbUrl = dbUrl;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setPw(String pw) {
+        this.pw = pw;
+    }
+
+    public Connection getConn() {
+        return conn;
+    }
+
+    //    public HashMap<String, ArrayList<ColumnInfo>> getColumnInfo(String Schema, String tableName) throws SQLException {
 //        HashMap<String, ArrayList<ColumnInfo>> tableAndColumn = new HashMap<>();
 //        ArrayList<ColumnInfo> columns = new ArrayList<>();
 //        ResultSet rs = conn.getMetaData().getColumns(null, Schema, tableName, "%");

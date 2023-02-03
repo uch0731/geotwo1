@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.metadata.ColumnInfo;
+import org.example.metadata.ConnectManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,9 +66,9 @@ public class CreateExcel {
 //        }
 //    }
     //db에서 가져온 데이터로 excel 만들기
-    public static void createExcelFromTable(Connection conn, String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn, String uploadLocation)
+    public static void createExcelFromTable(String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn, String uploadLocation)
         throws SQLException, IOException {
-        ArrayList<ArrayList<String>> data = selectAllFromTable(conn,tableName,tableAndColumn);
+        ArrayList<ArrayList<String>> data = selectAllFromTable(tableName,tableAndColumn);
 //        System.out.println(data);
         XSSFWorkbook workBook = new XSSFWorkbook();
         Sheet xSheet = workBook.createSheet("1");;

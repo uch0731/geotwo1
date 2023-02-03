@@ -29,7 +29,11 @@ public class Main {
         String readFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당_공연 및 전시 입장객 현황_20220728.xlsx";
         String uploadFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
 
-        ConnectManager manager = new ConnectManager(dbUrl,id,pw);
+//        ConnectManager manager = new ConnectManager(dbUrl,id,pw);
+        ConnectManager manager = ConnectManager.getInstance();
+        manager.setDbUrl(dbUrl);
+        manager.setId(id);
+        manager.setPw(pw);
         manager.connectDB(dbDriver);
 
         TableInfo tablesInfo = new TableInfo();
@@ -54,10 +58,10 @@ public class Main {
         data = readExcel(readFilePath);
         System.out.println(data);
 
-        insertIntoTable(manager.conn,tableName,data);
+        insertIntoTable(tableName,data);
 
-        createExcelFromTable(manager.conn, tableName, tableAndColumn, uploadFilePath);
+        createExcelFromTable(tableName, tableAndColumn, uploadFilePath);
 
-        manager.conn.close();
+        manager.closeConnection();
     }
 }

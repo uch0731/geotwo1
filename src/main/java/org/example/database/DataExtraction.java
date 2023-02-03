@@ -1,6 +1,7 @@
 package org.example.database;
 
 import org.example.metadata.ColumnInfo;
+import org.example.metadata.ConnectManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,12 +34,12 @@ public class DataExtraction {
 //    }
     //모든 데이터 가져오기
     public static  ArrayList<ArrayList<String>> selectAllFromTable
-    (Connection conn, String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn) throws SQLException {
-
+    (String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn) throws SQLException {
+        ConnectManager manager = ConnectManager.getInstance();
         ArrayList<ArrayList<String>> data = new ArrayList<>();
 
         String query = "SELECT * FROM " + tableName;
-        PreparedStatement pst = conn.prepareStatement(query);
+        PreparedStatement pst = manager.getConn().prepareStatement(query);
         ResultSet rs = pst.executeQuery();
 
         while(rs.next()) {

@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 //
-public class MetadataManager {
+public class ConnectManager {
 
     public Connection conn;
     private String dbUrl;
     private String id;
     private String pw;
 
-    public MetadataManager(String dbUrl, String id, String pw) {
+    public ConnectManager(String dbUrl, String id, String pw) {
         this.conn =  null;
         this.dbUrl = dbUrl;
         this.id = id;

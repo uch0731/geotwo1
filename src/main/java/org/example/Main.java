@@ -2,7 +2,7 @@ package org.example;
 
 
 import org.example.metadata.ColumnInfo;
-import org.example.metadata.MetadataManager;
+import org.example.metadata.ConnectManager;
 import org.example.metadata.TableInfo;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class Main {
         String readFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당_공연 및 전시 입장객 현황_20220728.xlsx";
         String uploadFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
 
-        MetadataManager manager = new MetadataManager(dbUrl,id,pw);
+        ConnectManager manager = new ConnectManager(dbUrl,id,pw);
         manager.connectDB(dbDriver);
 
         TableInfo tablesInfo = new TableInfo();

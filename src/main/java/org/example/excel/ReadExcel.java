@@ -23,7 +23,7 @@ public class ReadExcel {
             XSSFSheet sheet = workBook.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();
 
-            for (int rowIndex = 1; rowIndex < rows; rowIndex++) {
+            for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
                 ArrayList<String> temp = new ArrayList<>();
                 XSSFRow row = sheet.getRow(rowIndex);
 
@@ -41,7 +41,7 @@ public class ReadExcel {
                                     value = new SimpleDateFormat("yyyy-MM-dd").format(date);
                                 }
                                 else {
-                                    value = cell.getNumericCellValue() + "";
+                                    value = (int)cell.getNumericCellValue() + "";
                                 }
                                 break;
                             case STRING:

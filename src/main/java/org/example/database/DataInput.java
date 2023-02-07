@@ -20,6 +20,10 @@ public class DataInput {
                 pst.setString(j+1, data.get(i).get(j));
             }
             pst.addBatch();
+            if( (i % 100) == 0){
+                pst.executeBatch() ;
+                pst.clearBatch();
+            }
         }
         pst.executeBatch();
         pst.close();

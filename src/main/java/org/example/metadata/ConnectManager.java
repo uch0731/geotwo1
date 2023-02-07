@@ -9,7 +9,8 @@ public class ConnectManager {
 
     private static ConnectManager instance;
     private Connection conn;
-    private String dbUrl;
+    private String host;
+//    private String dbUrl;
     private String id;
     private String pw;
 
@@ -36,23 +37,40 @@ public class ConnectManager {
     }
 
     //DB연결
-    public void connectDB (String dbDriver){
-
+    public void connectDB (DatabaseType type){
+        String dbUrl = type.getStartUrl() + this.host + type.getEndUrl();
         try {
-            Class.forName(dbDriver);
+            Class.forName(type.getDriver());
             System.out.println("드라이버 검색 성공");
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 검색 실패");
         }
 
         try {
-            this.conn = DriverManager.getConnection(this.dbUrl, this.id, this.pw);
+            this.conn = DriverManager.getConnection(dbUrl, this.id, this.pw);
             System.out.println("데이터베이스 연결 성공");
         } catch (SQLException e) {
             System.out.println("데이터베이스 연결 실패(dbUrl, id, pw 확인)");
         }
 
     }
+//    public void connectDB (String dbDriver){
+//
+//        try {
+//            Class.forName(dbDriver);
+//            System.out.println("드라이버 검색 성공");
+//        } catch (ClassNotFoundException e) {
+//            System.out.println("드라이버 검색 실패");
+//        }
+//
+//        try {
+//            this.conn = DriverManager.getConnection(this.dbUrl, this.id, this.pw);
+//            System.out.println("데이터베이스 연결 성공");
+//        } catch (SQLException e) {
+//            System.out.println("데이터베이스 연결 실패(dbUrl, id, pw 확인)");
+//        }
+//
+//    }
 
     //table 정보 가져와 set
     public void setTableInfo( TableInfo tablesInfo, String Schema) throws SQLException{
@@ -102,8 +120,12 @@ public class ConnectManager {
         conn.close();
     }
 
-    public void setDbUrl(String dbUrl) {
-        this.dbUrl = dbUrl;
+//    public void setDbUrl(String dbUrl) {
+//        this.dbUrl = dbUrl;
+//    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public void setId(String id) {

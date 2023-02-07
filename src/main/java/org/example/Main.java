@@ -3,6 +3,7 @@ package org.example;
 
 import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
+import org.example.metadata.DatabaseType;
 import org.example.metadata.TableInfo;
 
 import java.io.IOException;
@@ -20,21 +21,25 @@ public class Main {
         ArrayList<String> tableNamesFromDB;
         ArrayList<ColumnInfo> columnsInfoFromTable;
         HashMap<String, ArrayList<ColumnInfo>> tableAndColumn;
-        String dbDriver = "oracle.jdbc.driver.OracleDriver";            //enum으로
-        String dbUrl = "jdbc:oracle:thin:@172.16.119.93:1521:orcl";     //enum으로
+//        String dbDriver = "oracle.jdbc.driver.OracleDriver";            //enum으로
+//        String dbUrl = "jdbc:oracle:thin:@172.16.119.93:1521:orcl";     //enum으로
+        String host = "172.16.119.93";
         String id = "sol_test2";
         String pw = "geotwo";
         String schemaName = "SOL_TEST2";
         String tableName = "SAC";
-        String readFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당_공연 및 전시 입장객 현황_20220728.xlsx";
+        String readFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
         String uploadFilePath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
+        DatabaseType type = DatabaseType.ORACLE;
 
 //        ConnectManager manager = new ConnectManager(dbUrl,id,pw);
         ConnectManager manager = ConnectManager.getInstance();
-        manager.setDbUrl(dbUrl);
+        manager.setHost(host);
+//        manager.setDbUrl(dbUrl);
         manager.setId(id);
         manager.setPw(pw);
-        manager.connectDB(dbDriver);
+        manager.connectDB(type);
+//        manager.connectDB(dbDriver);
 
         TableInfo tablesInfo = new TableInfo();
         manager.setTableInfo(tablesInfo,schemaName);

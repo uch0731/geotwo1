@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.database.DatabaseManager;
 import org.example.metadata.ColumnInfo;
 
 import java.io.File;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import static org.example.database.DataExtraction.selectAllFromTable;
 
 public class ExcelManager {
     private String uploadPath;
@@ -77,10 +77,11 @@ public class ExcelManager {
         return data;
     }
 
-    public void createExcelFromTable(String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn, String uploadExcelPath)
+    public void createExcelFromTable(DatabaseManager dbManager, String uploadExcelPath)
             throws SQLException, IOException {
 
-        ArrayList<ArrayList<String>> data = selectAllFromTable(tableName,tableAndColumn);
+        ArrayList<ArrayList<String>> data = dbManager.selectAllFromTable();
+        ArrayList<ColumnInfo> columnInfo = dbManager.getColumnInfo();
 
         XSSFWorkbook workBook = new XSSFWorkbook();
         Sheet xSheet = workBook.createSheet("1");;
@@ -93,10 +94,10 @@ public class ExcelManager {
         xRow = xSheet.createRow(0);
 
         //column 명 설정
-        for(int i =0; i< tableAndColumn.get(tableName).size(); i++) {
+        for(int i =0; i< columnInfo.size(); i++) {
             xCell = xRow.createCell(i);
             xSheet.setColumnWidth(i,10000);
-            xCell.setCellValue(tableAndColumn.get(tableName).get(i).getName());
+            xCell.setCellValue(columnInfo.get(i).getName());
         }
 
         //엑셀파일에 데이터 쓰기

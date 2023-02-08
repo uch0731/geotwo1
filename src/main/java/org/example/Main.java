@@ -1,6 +1,7 @@
 package org.example;
 
 
+import org.example.database.DatabaseManager;
 import org.example.excel.ExcelManager;
 import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
@@ -9,10 +10,10 @@ import org.example.metadata.TableInfo;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import static org.example.database.DataInput.insertIntoTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
@@ -24,10 +25,10 @@ public class Main {
         String id = "sol_test2";
         String pw = "geotwo";
         String schemaName = "SOL_TEST2";
-        String tableName = "SAC";
-//        String tableName = "SAC2";
-//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
-        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
+//        String tableName = "SAC";
+        String tableName = "SAC2";
+        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
+//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
         String uploadExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
         DatabaseType type = DatabaseType.ORACLE;
 
@@ -64,9 +65,12 @@ public class Main {
         data = excelManager.readExcel();
         System.out.println(data);
 
-        insertIntoTable(tableName,columnsInfoFromTable,data);
-
-        excelManager.createExcelFromTable(tableName, tableAndColumn, uploadExcelPath);
+        DatabaseManager dbManager = new DatabaseManager();
+        dbManager.setTableName(tableName);
+        dbManager.setColumnInfo(tableAndColumn.get(tableName));
+        dbManager.insertIntoTable(data);
+//        insertIntoTable(tableName, columnsInfoFromTable, data);
+        excelManager.createExcelFromTable(dbManager, uploadExcelPath);
 
         connectManager.closeConnection();
     }

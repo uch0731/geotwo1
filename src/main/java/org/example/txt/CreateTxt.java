@@ -1,7 +1,5 @@
 package org.example.txt;
 
-import org.example.metadata.ConnectManager;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,29 +16,27 @@ public class CreateTxt {
         this.date = new Date(System.currentTimeMillis());
     }
 
-    public static CreateTxt getInstance()
-    {
-        if (instance == null)
-        {
-            synchronized(CreateTxt.class)
-            {
+    //싱글톤 방식
+    public static CreateTxt getInstance() {
+        if (instance == null) {
+            synchronized(CreateTxt.class) {
                 instance = new CreateTxt();
             }
         }
-
         return instance;
     }
 
-    public void createTxt(String errorLocation) throws IOException {
+    public void createTxt(int errorRow, int errorCol) throws IOException {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-z");
-        String uploadTxtPath = "C:\\Users\\GEOTWO\\Desktop\\error_" + formatter.format(date) +".txt";
+        String uploadTxtPath = "C:\\Users\\GEOTWO\\Desktop\\error_" + formatter.format(date) +"_log.txt";
+        String errorPoint = "행: " + errorRow + " 열: " + errorCol;
 
         File file = new File(uploadTxtPath);
         if(!file.exists()){
             file.createNewFile();
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-        writer.write(errorLocation);
+        writer.write(errorPoint);
         writer.newLine();
         writer.flush();
         writer.close();

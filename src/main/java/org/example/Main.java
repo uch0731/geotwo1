@@ -1,6 +1,7 @@
 package org.example;
 
 
+import org.example.excel.ExcelManager;
 import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
 import org.example.metadata.DatabaseType;
@@ -8,10 +9,7 @@ import org.example.metadata.TableInfo;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
-import static org.example.excel.CreateExcel.createExcelFromTable;
 import static org.example.database.DataInput.insertIntoTable;
-import static org.example.excel.ReadExcel.readExcel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,36 +20,33 @@ public class Main {
         ArrayList<String> tableNamesFromDB;
         ArrayList<ColumnInfo> columnsInfoFromTable;
         HashMap<String, ArrayList<ColumnInfo>> tableAndColumn;
-//        String dbDriver = "oracle.jdbc.driver.OracleDriver";            //enum으로
-//        String dbUrl = "jdbc:oracle:thin:@172.16.119.93:1521:orcl";     //enum으로
         String host = "172.16.119.93";
         String id = "sol_test2";
         String pw = "geotwo";
         String schemaName = "SOL_TEST2";
-        String tableName = "SAC2";
-        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
-//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
+        String tableName = "SAC";
+//        String tableName = "SAC2";
+//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
+        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
         String uploadExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
         DatabaseType type = DatabaseType.ORACLE;
 
-//        ConnectManager manager = new ConnectManager(dbUrl,id,pw);
-        ConnectManager manager = ConnectManager.getInstance();
-        manager.setHost(host);
-//        manager.setDbUrl(dbUrl);
-        manager.setId(id);
-        manager.setPw(pw);
-        manager.connectDB(type);
-//        manager.connectDB(dbDriver);
+        ConnectManager connectManager = ConnectManager.getInstance();
+        connectManager.setHost(host);
+        connectManager.setId(id);
+        connectManager.setPw(pw);
 
-        TableInfo tablesInfo = new TableInfo();
-        manager.setTableInfo(tablesInfo,schemaName);
-        //tablesInfo.setTableNames(manager, schemaName);
-        tableNamesFromDB = tablesInfo.getTableNames();
+        connectManager.connectDB(type);
+
+        TableInfo tableInfo = new TableInfo();
+        connectManager.setTableInfo(tableInfo,schemaName);
+        tableNamesFromDB = tableInfo.getTableNames();
+
         System.out.println(tableNamesFromDB);
 
+
         ColumnInfo columnInfo = new ColumnInfo();
-        manager.setColumnInfo(columnInfo,schemaName, tableName);
-        //columnInfo.setTableAndColumn(manager, schemaName, tableName);
+        connectManager.setTableAndColumn(tableInfo, columnInfo, schemaName, tableName);
         columnsInfoFromTable = columnInfo.getColumInfo(tableName);
 
         for(int i=0; i< columnsInfoFromTable.size(); i++) {
@@ -62,13 +57,17 @@ public class Main {
 
         tableAndColumn = columnInfo.getTableAndColumn();
 
-        data = readExcel(readExcelPath);
+        ExcelManager excelManager = new ExcelManager();
+        excelManager.setReadPath(readExcelPath);
+        excelManager.setUploadPath(uploadExcelPath);
+
+        data = excelManager.readExcel();
         System.out.println(data);
 
         insertIntoTable(tableName,columnsInfoFromTable,data);
 
-        createExcelFromTable(tableName, tableAndColumn, uploadExcelPath);
+        excelManager.createExcelFromTable(tableName, tableAndColumn, uploadExcelPath);
 
-        manager.closeConnection();
+        connectManager.closeConnection();
     }
 }

@@ -2,8 +2,6 @@ package org.example.database;
 
 import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,26 +10,7 @@ import java.util.HashMap;
 
 //data 추출
 public class DataExtraction {
-//    public static  ArrayList<ArrayList<String>> selectAllFromTable(Connection conn, String tableName, ArrayList<ColumnInfo> columnsInfo) throws SQLException {
-//
-//        ArrayList<ArrayList<String>> data = new ArrayList<>();
-//
-//        String query = "SELECT * FROM " + tableName;
-//        PreparedStatement pst = conn.prepareStatement(query);
-//        ResultSet rs = pst.executeQuery();
-//
-//        while(rs.next()) {
-//            ArrayList<String> temp = new ArrayList<>();
-//            for(int i =0; i< columnsInfo.size(); i++) {
-//                String tempData = rs.getString(i+1);
-//                temp.add(tempData);
-//            }
-//            data.add(temp);
-//        }
-//        rs.close();
-//        pst.close();
-//        return data;
-//    }
+
     //모든 데이터 가져오기
     public static  ArrayList<ArrayList<String>> selectAllFromTable
     (String tableName, HashMap<String, ArrayList<ColumnInfo>> tableAndColumn) throws SQLException {

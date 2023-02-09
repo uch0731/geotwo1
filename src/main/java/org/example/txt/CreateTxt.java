@@ -26,7 +26,8 @@ public class CreateTxt {
         return instance;
     }
 
-    public void createTxt(int errorRow, int errorCol) throws IOException {
+    //error txt 만들기
+    public void createErrorTxt(int errorRow, int errorCol) throws IOException {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-z");
         String uploadTxtPath = "C:\\Users\\GEOTWO\\Desktop\\error_" + formatter.format(date) +"_log.txt";
         String errorPoint = "행: " + errorRow + " 열: " + errorCol;

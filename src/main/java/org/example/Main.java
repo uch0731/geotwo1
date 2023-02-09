@@ -7,56 +7,74 @@ import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
 import org.example.metadata.DatabaseType;
 import org.example.metadata.TableInfo;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import org.example.user.UserInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 
 public class Main {
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws Exception {
+
+
         ArrayList<ArrayList<String>> data;
         ArrayList<String> tableNamesFromDB;
         ArrayList<ColumnInfo> columnsInfoFromTable;
-        HashMap<String, ArrayList<ColumnInfo>> tableAndColumn;
+
+
         String host = "172.16.119.93";
+        String port = "1521";
+        String sid = "orcl";
+
         String id = "sol_test2";
         String pw = "geotwo";
+
         String schemaName = "SOL_TEST2";
 //        String tableName = "SAC";
+
         String tableName = "SAC2";
-        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
-//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
+//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
+        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
         String uploadExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
+
+        String dbType = "oracle";
         DatabaseType type = DatabaseType.ORACLE;
+//        DatabaseType type = DatabaseType.valueOf(dbType.trim().toUpperCase());
 
-        ConnectManager connectManager = ConnectManager.getInstance();
-        connectManager.setHost(host);
-        connectManager.setId(id);
-        connectManager.setPw(pw);
+        UserInfo dbUser = new UserInfo(id, pw);
+        dbUser.setHost(host);
+        dbUser.setPort(port);
+        dbUser.setSid(sid);
+        dbUser.setSchema(schemaName);
+        dbUser.setTableNm(tableName);
 
-        connectManager.connectDB(type);
 
-        TableInfo tableInfo = new TableInfo();
-        connectManager.setTableInfo(tableInfo,schemaName);
-        tableNamesFromDB = tableInfo.getTableNames();
+        // 싱글턴 = static
+//        ConnectManager.getInstance().initTableList(dbUser);
+//        // output
+//        // dbUser.getTableList() -> ArrayList
+//        // dbUser.getTableInfo(tableName) -> TableInfo
+//
+//        // TableInfo
+//        // TableInfo.columnList -> arraylist<ColumnInfo>
+
+
+        // 유효성 확인???
+        // 사용자가?? 내가해줘??
+
+        ConnectManager connMngr = new ConnectManager(dbUser);
+        connMngr.connectDB(type);
+
+        tableNamesFromDB = connMngr.getTableNameList();
 
         System.out.println(tableNamesFromDB);
 
-
-        ColumnInfo columnInfo = new ColumnInfo();
-        connectManager.setTableAndColumn(tableInfo, columnInfo, schemaName, tableName);
-        columnsInfoFromTable = columnInfo.getColumInfo(tableName);
+        TableInfo table = connMngr.getTableInfo();
+        columnsInfoFromTable = table.getColumnInfo();
 
         for(int i=0; i< columnsInfoFromTable.size(); i++) {
             System.out.println("Column Name : " + columnsInfoFromTable.get(i).getName()
-                                + "  Column Type : " + columnsInfoFromTable.get(i).getType()
-                                + "  Column Size : " + columnsInfoFromTable.get(i).getSize());
+                    + "  Column Type : " + columnsInfoFromTable.get(i).getType()
+                    + "  Column Size : " + columnsInfoFromTable.get(i).getSize());
         }
-
-        tableAndColumn = columnInfo.getTableAndColumn();
 
         ExcelManager excelManager = new ExcelManager();
         excelManager.setReadPath(readExcelPath);
@@ -66,12 +84,13 @@ public class Main {
         System.out.println(data);
 
         DatabaseManager dbManager = new DatabaseManager();
-        dbManager.setTableName(tableName);
-        dbManager.setColumnInfo(tableAndColumn.get(tableName));
+        connMngr.giveConnToDB(dbManager);
+        dbManager.setTargetTable(table);
+
         dbManager.insertIntoTable(data);
-//        insertIntoTable(tableName, columnsInfoFromTable, data);
+
         excelManager.createExcelFromTable(dbManager, uploadExcelPath);
 
-        connectManager.closeConnection();
+        connMngr.closeConnection();
     }
 }

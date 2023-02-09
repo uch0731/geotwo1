@@ -1,6 +1,8 @@
 package org.example.metadata;
 
 public enum DatabaseType {
+    //1521 하고 orcl도 입력받아야함
+    //총 유알엘을 스트링으로 만들고 입력받은 부분을 리플레이스
     ORACLE("oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@", ":1521:orcl"),
     MYSQL(" "," "," "),
     MSSQL(" "," "," ");

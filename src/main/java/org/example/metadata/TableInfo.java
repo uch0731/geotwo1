@@ -7,22 +7,23 @@ import java.util.ArrayList;
 //table 정보
 public class TableInfo {
 
-    private ArrayList<String> tableNames;
-    private HashMap<String, ArrayList<ColumnInfo>> tableAndColumn = new HashMap<>();
+    private String tableName;
+    private ArrayList<ColumnInfo> columnInfo = new ArrayList<>();
 
-    public ArrayList<String> getTableNames(){
-        return this.tableNames;
+
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setTableNames( ArrayList<String> names) throws SQLException{
-        tableNames = names;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
-    public HashMap<String, ArrayList<ColumnInfo>> getTableAndColumn() {
-        return tableAndColumn;
+    public ArrayList<ColumnInfo> getColumnInfo() {
+        return columnInfo;
     }
 
-    public void setTableAndColumn(String tableName, ArrayList<ColumnInfo> columnInfo) {
-        this.tableAndColumn.put(tableName, columnInfo);
+    public void setColumnInfo(ArrayList<ColumnInfo> columnInfo) {
+        this.columnInfo = columnInfo;
     }
 }

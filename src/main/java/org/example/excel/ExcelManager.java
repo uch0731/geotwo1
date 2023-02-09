@@ -81,7 +81,7 @@ public class ExcelManager {
             throws SQLException, IOException {
 
         ArrayList<ArrayList<String>> data = dbManager.selectAllFromTable();
-        ArrayList<ColumnInfo> columnInfo = dbManager.getColumnInfo();
+        ArrayList<ColumnInfo> columnInfo = dbManager.getTargetTable().getColumnInfo();
 
         XSSFWorkbook workBook = new XSSFWorkbook();
         Sheet xSheet = workBook.createSheet("1");;
@@ -94,10 +94,12 @@ public class ExcelManager {
         xRow = xSheet.createRow(0);
 
         //column 명 설정
-        for(int i =0; i< columnInfo.size(); i++) {
-            xCell = xRow.createCell(i);
-            xSheet.setColumnWidth(i,10000);
-            xCell.setCellValue(columnInfo.get(i).getName());
+        if(data.size() != 0){
+            for(int i =0; i< columnInfo.size(); i++) {
+                xCell = xRow.createCell(i);
+                xSheet.setColumnWidth(i,10000);
+                xCell.setCellValue(columnInfo.get(i).getName());
+            }
         }
 
         //엑셀파일에 데이터 쓰기

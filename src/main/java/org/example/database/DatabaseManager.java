@@ -2,9 +2,11 @@ package org.example.database;
 
 import org.example.metadata.ColumnInfo;
 import org.example.metadata.ConnectManager;
+import org.example.metadata.TableInfo;
 import org.example.txt.CreateTxt;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,17 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DatabaseManager {
-    private String tableName;
-    private ArrayList<ColumnInfo> columnInfo;
+    private Connection conn;
+    private TableInfo targetTable;
 
     //데이터 입력
     public void insertIntoTable(ArrayList<ArrayList<String>> data) throws SQLException, IOException {
         boolean error = false;
-        ConnectManager manager = ConnectManager.getInstance();
+        ArrayList<ColumnInfo> columnInfo = targetTable.getColumnInfo();
         String s = " values (" + "?,".repeat(columnInfo.size() - 1) + "?)";
 
-        manager.getConn().setAutoCommit(false);
-        PreparedStatement pst = manager.getConn().prepareStatement("insert into " + tableName + s);
+        conn.setAutoCommit(false);
+        PreparedStatement pst = conn.prepareStatement("insert into " + targetTable.getTableName() + s);
         int[] columnSequence = new int[columnInfo.size()];
 
         //칼럼 이름으로 칼럼 순서 맞추기
@@ -57,7 +59,7 @@ public class DatabaseManager {
                     error = true; //error flag true로 바꾸기
                     CreateTxt errorTxt = CreateTxt.getInstance();
                     //실패 row and column 전달
-                    errorTxt.createTxt(i+1, columnSequence[j]+1);
+                    errorTxt.createErrorTxt(i+1, columnSequence[j]+1);
                 }
             }
             //error 발생시 insert문 add안함
@@ -72,11 +74,11 @@ public class DatabaseManager {
         //error 발생시 커밋안함
         if(error) {
             System.out.println("ERROR ");
-            manager.getConn().rollback();
+            conn.rollback();
         }else{
             System.out.println("Data Insert");
             pst.executeBatch();
-            manager.getConn().commit();
+            conn.commit();
         }
 
         pst.close();
@@ -84,16 +86,15 @@ public class DatabaseManager {
 
     //모든 데이터 가져오기
     public ArrayList<ArrayList<String>> selectAllFromTable() throws SQLException {
-        ConnectManager manager = ConnectManager.getInstance();
         ArrayList<ArrayList<String>> data = new ArrayList<>();
 
-        String query = "SELECT * FROM " + tableName;
-        PreparedStatement pst = manager.getConn().prepareStatement(query);
+        String query = "SELECT * FROM " + targetTable.getTableName();
+        PreparedStatement pst =conn.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
 
         while(rs.next()) {
             ArrayList<String> temp = new ArrayList<>();
-            for(int i =0; i< columnInfo.size(); i++) {
+            for(int i =0; i< targetTable.getColumnInfo().size(); i++) {
                 String tempData = rs.getString(i+1);
                 temp.add(tempData);
             }
@@ -103,19 +104,14 @@ public class DatabaseManager {
         pst.close();
         return data;
     }
-    public String getTableName() {
-        return tableName;
-    }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
-
-    public ArrayList<ColumnInfo> getColumnInfo() {
-        return columnInfo;
+    public void setTargetTable(TableInfo targetTable) {
+        this.targetTable = targetTable;
     }
-
-    public void setColumnInfo(ArrayList<ColumnInfo> columnInfo) {
-        this.columnInfo = columnInfo;
+    public TableInfo getTargetTable(){
+        return targetTable;
     }
 }

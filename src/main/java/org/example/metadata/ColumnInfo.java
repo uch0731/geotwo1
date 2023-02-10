@@ -1,8 +1,5 @@
 package org.example.metadata;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 //column 정보
 public class ColumnInfo {
 

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
 
 
 public class ExcelManager {
@@ -77,7 +77,7 @@ public class ExcelManager {
         return data;
     }
 
-    public void createExcelFromTable(DatabaseManager dbManager, String uploadExcelPath)
+    public void createExcelFromTable(DatabaseManager dbManager)
             throws SQLException, IOException {
 
         ArrayList<ArrayList<String>> data = dbManager.selectAllFromTable();
@@ -88,7 +88,7 @@ public class ExcelManager {
         Row xRow;
         Cell xCell;
 
-        File file = new File(uploadExcelPath);
+        File file = new File(uploadPath);
         FileOutputStream excel = new FileOutputStream(file);
 
         xRow = xSheet.createRow(0);

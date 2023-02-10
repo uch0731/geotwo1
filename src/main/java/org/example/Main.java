@@ -29,15 +29,14 @@ public class Main {
 
         String schemaName = "SOL_TEST2";
 //        String tableName = "SAC";
-
         String tableName = "SAC2";
-//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
-        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
+
+        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당error.xlsx";
+//        String readExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라\\예술의전당.xlsx";
         String uploadExcelPath = "C:\\Users\\GEOTWO\\Desktop\\유창차라라" + ".xlsx";
 
-        String dbType = "oracle";
-        DatabaseType type = DatabaseType.ORACLE;
-//        DatabaseType type = DatabaseType.valueOf(dbType.trim().toUpperCase());
+        String dbType = "oracle"; //데이터베이스 이름 적기
+        DatabaseType type = DatabaseType.valueOf(dbType.trim().toUpperCase());
 
         UserInfo dbUser = new UserInfo(id, pw);
         dbUser.setHost(host);
@@ -45,20 +44,6 @@ public class Main {
         dbUser.setSid(sid);
         dbUser.setSchema(schemaName);
         dbUser.setTableNm(tableName);
-
-
-        // 싱글턴 = static
-//        ConnectManager.getInstance().initTableList(dbUser);
-//        // output
-//        // dbUser.getTableList() -> ArrayList
-//        // dbUser.getTableInfo(tableName) -> TableInfo
-//
-//        // TableInfo
-//        // TableInfo.columnList -> arraylist<ColumnInfo>
-
-
-        // 유효성 확인???
-        // 사용자가?? 내가해줘??
 
         ConnectManager connMngr = new ConnectManager(dbUser);
         connMngr.connectDB(type);
@@ -89,7 +74,7 @@ public class Main {
 
         dbManager.insertIntoTable(data);
 
-        excelManager.createExcelFromTable(dbManager, uploadExcelPath);
+        excelManager.createExcelFromTable(dbManager);
 
         connMngr.closeConnection();
     }

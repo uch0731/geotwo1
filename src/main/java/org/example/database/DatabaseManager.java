@@ -1,7 +1,6 @@
 package org.example.database;
 
 import org.example.metadata.ColumnInfo;
-import org.example.metadata.ConnectManager;
 import org.example.metadata.TableInfo;
 import org.example.txt.CreateTxt;
 
